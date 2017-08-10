@@ -11,9 +11,11 @@ import org.inventivetalent.chromaclient.data.Result;
 import org.inventivetalent.chromaclient.effects.EffectAbstract;
 import org.inventivetalent.chromaclient.effects.EffectId;
 import org.inventivetalent.chromaclient.effects.EffectIds;
+import org.inventivetalent.chromaclient.effects.Effects;
 import org.inventivetalent.chromaclient.response.ResponseHeartbeat;
 import org.inventivetalent.chromaclient.response.ResponseInit;
 import org.inventivetalent.chromaclient.response.ResponseResult;
+import org.inventivetalent.chromaclient.response.ResponseResults;
 
 public class ChromaClient {
 
@@ -131,11 +133,12 @@ public class ChromaClient {
 	 * @return the {@link EffectId} to be used when setting the effect
 	 * @throws UnirestException
 	 */
-	public EffectId createEffect( EffectAbstract effect) throws UnirestException {
+	public EffectId createEffect(EffectAbstract effect) throws UnirestException {
 		System.out.println("createEffect POST " + effect.getTarget().getRoute());
 		System.out.println(new Gson().toJson(effect));
+		checkInitialized();
 		HttpResponse<EffectId> response = Unirest
-				.post(this.session.getUri() +  effect.getTarget().getRoute())
+				.post(this.session.getUri() + effect.getTarget().getRoute())
 				.body(effect)
 				.asObject(EffectId.class);
 		return response.getBody();
@@ -148,23 +151,33 @@ public class ChromaClient {
 	 * @return the result
 	 * @throws UnirestException
 	 */
-	public ResponseResult createAndSetEffect( EffectAbstract effect) throws UnirestException {
-		System.out.println("createAndSetEffect PUT " +  effect.getTarget().getRoute());
+	public ResponseResult createAndSetEffect(EffectAbstract effect) throws UnirestException {
+		System.out.println("createAndSetEffect PUT " + effect.getTarget().getRoute());
 		System.out.println(new Gson().toJson(effect));
 		System.out.println(effect.getTarget());
+		checkInitialized();
 		HttpResponse<ResponseResult> response = Unirest
-				.put(this
-						.session
-						.getUri() +
-						effect
-								.getTarget()
-								.getRoute())
+				.put(this.session.getUri() + effect.getTarget().getRoute())
 				.body(effect)
 				.asObject(ResponseResult.class);
 		return response.getBody();
 	}
 
-	//TODO: createEffects / createAndSetEffects
+	/**
+	 * Creates multiple effects
+	 *
+	 * @param effects the {@link Effects} to create
+	 * @return the {@link ResponseResults}
+	 * @throws UnirestException
+	 */
+	public ResponseResults createEffects(Effects effects) throws UnirestException {
+		checkInitialized();
+		HttpResponse<ResponseResults> response = Unirest
+				.post(this.session.getUri() + effects.getTarget())
+				.body(effects)
+				.asObject(ResponseResults.class);
+		return response.getBody();
+	}
 
 	/**
 	 * Applies an effect to the device
@@ -174,6 +187,7 @@ public class ChromaClient {
 	 * @throws UnirestException
 	 */
 	public ResponseResult setEffect(EffectId effectId) throws UnirestException {
+		checkInitialized();
 		HttpResponse<ResponseResult> response = Unirest
 				.put(this.session.getUri() + "/effect")
 				.body(effectId)
@@ -189,6 +203,7 @@ public class ChromaClient {
 	 * @throws UnirestException
 	 */
 	public ResponseResult deleteEffect(EffectId effectId) throws UnirestException {
+		checkInitialized();
 		HttpResponse<ResponseResult> response = Unirest
 				.put(this.session.getUri() + "/effect")
 				.body(effectId)
@@ -204,6 +219,7 @@ public class ChromaClient {
 	 * @throws UnirestException
 	 */
 	public ResponseResult setEffects(EffectIds effectIds) throws UnirestException {
+		checkInitialized();
 		HttpResponse<ResponseResult> response = Unirest
 				.put(this.session.getUri() + "/effect")
 				.body(effectIds)
@@ -219,6 +235,7 @@ public class ChromaClient {
 	 * @throws UnirestException
 	 */
 	public ResponseResult deleteEffects(EffectIds effectIds) throws UnirestException {
+		checkInitialized();
 		HttpResponse<ResponseResult> response = Unirest
 				.put(this.session.getUri() + "/effect")
 				.body(effectIds)
