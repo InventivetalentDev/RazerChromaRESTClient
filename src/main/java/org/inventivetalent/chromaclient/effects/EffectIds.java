@@ -20,4 +20,9 @@ public class EffectIds {
 		return this;
 	}
 
+	public EffectIds add(EffectId id) {
+		this.ids.add(id.getId());
+		return this;
+	}
+
 }
