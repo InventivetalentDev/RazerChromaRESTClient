@@ -9,4 +9,12 @@ public class Util {
 		return (blue << 16) | (green << 8) | (red << 0);
 	}
 
+	public static byte loByte(int i) {
+		return (byte) (i & 0xff);
+	}
+
+	public static byte hiByte(int i) {
+		return (byte) ((i >> 8) & 0xff);
+	}
+
 }

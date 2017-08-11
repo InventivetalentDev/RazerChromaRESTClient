@@ -38,6 +38,18 @@ public abstract class ColorMatrixAbstract {
 		return columns;
 	}
 
+	public void setColor(int i, int bgr) {
+		byte hi = Util.hiByte(i);
+		byte lo = Util.loByte(i);
+		if (hi < 0 || hi > rows) { return; }
+		if (lo < 0 || lo > columns) { return; }
+		matrix[hi][lo] = bgr;
+	}
+
+	public void setColor(int i, Color color) {
+		setColor(i, Util.rgbToBgr(color.getRGB()));
+	}
+
 	public void setColor(int x, int y, int bgr) {
 		if (x < 0 || x > columns) { throw new IllegalArgumentException("Invalid x position, must be 0 > x < " + columns); }
 		if (y < 0 || y > rows) { throw new IllegalArgumentException("Invalid y position, must be 0 > x < " + columns); }
