@@ -46,4 +46,8 @@ public abstract class ColorArrayAbstract {
 		fill(Util.rgbToBgr(color.getRGB()));
 	}
 
+	public void reset() {
+		this.fill(0);
+	}
+
 }

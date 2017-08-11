@@ -72,6 +72,10 @@ public abstract class ColorMatrixAbstract {
 		fill(Util.rgbToBgr(color.getRGB()));
 	}
 
+	public void reset() {
+		this.fill(0);
+	}
+
 	public void fillRow(int row, int bgr) {
 		if (row < 0 || row > rows) { throw new IllegalArgumentException("Invalid row, must be 0 > row < " + rows); }
 		for (int i = 0; i < columns; i++) {
